@@ -98,13 +98,10 @@ spec:
 
             bench_exit_status=$?;
 
-            if [ $bench_exit_status -ne 0 ]; then
-                if [[ "$bench_output" == *"already exists"* ]]; then
-                    echo "Site {{ $site.name }} already exists, continuing...";
-                else
-                    echo "An error occurred while creating site {{ $site.name }}";
-                    exit $bench_exit_status;
-                fi
+            if [ "$bench_exit_status" -ne 0 ]; then
+                echo "ERROR: bench new-site failed for {{ $site.name }} (exit ${bench_exit_status}).";
+                echo "Output: ${bench_output}";
+                exit "$bench_exit_status";
             fi;
 
             {{- end }}
